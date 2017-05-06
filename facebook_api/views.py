@@ -6,7 +6,7 @@ from .url_worker.url_worker import URL_WORKER
 from .services.unicode_worker import convert_object
 
 
-def test(request):
+def get_me(request):
     url = URL_WORKER()
     result = requests.get(url.url).json()
 

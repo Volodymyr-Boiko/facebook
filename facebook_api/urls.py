@@ -1,8 +1,8 @@
 from django.conf.urls import url, include
 
-from .views import test
+from .views import get_me
 
 
 urlpatterns = [
-    url(r'^test$', test, name='test'),
+    url(r'^get_me$', get_me, name='test'),
 ]

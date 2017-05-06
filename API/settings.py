@@ -145,7 +145,6 @@ ACCESS_TOKEN = 'EAAGQu7mMEr0BAChQL9NAAE9lVIAGyJkT1Jnp4AZBxIa1y12bXKf3hu2wx1B3crv
 
 s = 'https://graph.facebook.com/v2.9/me?' \
     'access_token={ACCESS_TOKEN}' \
-    '&debug=all' \
     '&fields=id%2Cname' \
     '&format=json' \
     '&method=get' \
@@ -154,3 +153,7 @@ s = 'https://graph.facebook.com/v2.9/me?' \
 
 RESULT_URL = 'https://graph.facebook.com/v2.9/me?access_token={ACCESS_TOKEN}'.\
     format(ACCESS_TOKEN=ACCESS_TOKEN)
+
+
+
+sss = 'https://graph.facebook.com/v2.9/me?access_token=EAAGQu7mMEr0BADcgV1IwZC4Wuh3u16p3f6n3QbHph6n2dasjsdUOTlMLB0zl3dw9JeQFUabh5Dq4H2WYZCSYkvaZBg6fJhqvZAXkN7D4C9CVCQwtY9faDXXBdmOFyHHw0qyDZAB65rdSwAzRSxod2tJ7JBQsomRFqAquPMOIAOlSwhi5ip4SwWlCaCccFM0gZD&debug=all&fields=id%2Cname%2Ceducation%2Cgender%2Cphotos%7Bimages%7D%2Cabout&format=json&method=get&pretty=0&suppress_http_code=1'
