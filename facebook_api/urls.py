@@ -1,6 +1,6 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 
-from views import test
+from .views import test
 
 
 urlpatterns = [

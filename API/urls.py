@@ -20,6 +20,4 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include('facebook_api.urls')),
-    (r'^facebook/', include('facebook_api.urls')),
-    (r'^accounts/', include('facebook_api.auth_urls')),
 ]
