@@ -4,7 +4,7 @@ from API.settings import RESULT_URL
 class URL_WORKER(object):
 
     def __init__(self, fields=None, method=None):
-        self.url = RESULT_URL
+        self._url = RESULT_URL
         self._fields = fields
         self._method = method
 
@@ -32,3 +32,8 @@ class URL_WORKER(object):
             pass
         else:
             pass
+
+    @property
+    def url(self):
+        if not self._fields:
+            return self._url
