@@ -1,4 +1,5 @@
 import requests
+from django.contrib.auth.decorators import login_required
 
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -54,3 +55,8 @@ def register(request):
         'profile_form': profile_form
     }
     return render(request, 'register.html', context)
+
+
+@login_required
+def home(request):
+    return render(request, 'home.html')
