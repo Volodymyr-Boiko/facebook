@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
@@ -27,7 +26,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,7 +35,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'social.apps.django_app.default',
     'facebook_api'
 ]
 
@@ -53,6 +50,8 @@ MIDDLEWARE_CLASSES = [
 ]
 
 ROOT_URLCONF = 'API.urls'
+
+REGISTRATION_OPEN = True
 
 TEMPLATES = [
     {
@@ -70,24 +69,27 @@ TEMPLATES = [
     },
 ]
 
-TEMPLATE_CONTEXT_PROCESSORS = \
-    ("django.core.context_processors.request",
-    # "social.apps.django_app.context_processors.backends",
-    # "social.apps.django_app.context_processors.login_redirect",
-    # "studentsdb.context_processors.students_proc",
-    # "students.context_processors.groups_processor",
-    'facebook_api.context_processors.facebook',
-    )
-
-AUTHENTICATION_BACKENDS = (
-    'social.backends.facebook.FacebookOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
-    'facebook_api.auth_backends.FacebookBackend',
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = \
+    (
+    # ("django.core.context_processors.request",
+     # "social.apps.django_app.context_processors.backends",
+     # "social.apps.django_app.context_processors.login_redirect",
+     # "studentsdb.context_processors.students_proc",
+     # "students.context_processors.groups_processor",
+     )
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 WSGI_APPLICATION = 'API.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -98,7 +100,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -118,7 +119,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -132,14 +132,35 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
 
+FACEBOOK_CLIENT_ID = '132816840603239'
+FACEBOOK_CLIENT_SECRET = '91ae669a2520d2270c98f2a874bf1ea0'
 
-FACEBOOK_CLIENT_ID = '653886898131145'
-FACEBOOK_CLIENT_SECRET = '8ccfbde95ee9c795a766011c426e0836'
 
-AUTH_USER_MODEL = 'facebook_api.FacebookCustomUser'
+GET_ACCESS_TOKEN = 'https://graph.facebook.com/oauth/access_token?' \
+                   'client_id={APP_ID}&' \
+                   'client_secret={APP_SECRET}&' \
+                   'grant_type=fb_exchange_token&' \
+                   'fb_exchange_token={EXISTING_ACCESS_TOKEN}'.\
+    format(APP_ID=FACEBOOK_CLIENT_ID,
+           APP_SECRET=FACEBOOK_CLIENT_SECRET,
+           EXISTING_ACCESS_TOKEN='EAAGQu7mMEr0BABfbprAA9zpA4G3W8gfk0WvMGn9ZAO9Tn3ZAoLyVSLcDjZCV5XGy7YVPGdxyuUE3v8GYw37nc8kRU8u0dUZA7vtdpk3ksqjIOAnZA9m5UZBGEJJYef8gLEqxZCLkJJW2bBNVlqaZBraPZAltwUIrwgYsplFDWZAqdh54fZAPpwMuhnuxlcfGDuJ0bEZD'
+           )
+
+ACCESS_TOKEN = 'EAAGQu7mMEr0BAChQL9NAAE9lVIAGyJkT1Jnp4AZBxIa1y12bXKf3hu2wx1B3crv0ZBhEgAsqZBoiPZCpRcS0jF28vnmvoC8yZAS6IuVDAVjiVTAeRLn4zJMGOKYwdiXrIJRKMB6ElREdjmf10u1tpJa0k5bV1YboZD'
+
+s = 'https://graph.facebook.com/v2.9/me?' \
+    'access_token={ACCESS_TOKEN}' \
+    '&debug=all' \
+    '&fields=id%2Cname' \
+    '&format=json' \
+    '&method=get' \
+    '&pretty=0' \
+    '&suppress_http_code=1'.format(ACCESS_TOKEN=ACCESS_TOKEN)
+
+RESULT_URL = 'https://graph.facebook.com/v2.9/me?access_token={ACCESS_TOKEN}'.\
+    format(ACCESS_TOKEN=ACCESS_TOKEN)

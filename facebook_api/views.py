@@ -1,58 +1,56 @@
-from json import dumps
+import requests
 
-from django.shortcuts import render
 from django.http import JsonResponse
+from django.shortcuts import render
 
-from API.settings import FACEBOOK_CLIENT_ID
-from API.settings import FACEBOOK_CLIENT_SECRET
+from url_worker.url_worker import URL_WORKER
+from services.unicode_worker import convert_object
 
-from flask_oauth import OAuth
-
-
-oauth = OAuth()
-
-facebook = oauth.remote_app(
-    'facebook',
-    base_url='https://graph.facebook.com/',
-    request_token_url=None,
-    access_token_url='/oauth/access_token',
-    authorize_url='https://www.facebook.com/dialog/oauth',
-    consumer_key=FACEBOOK_CLIENT_ID,
-    consumer_secret=FACEBOOK_CLIENT_SECRET,
-    request_token_params={'scope': ('email, ')}
-)
+from .forms import UserForm
+from .forms import UserProfileForm
+from .models import UserProfile
 
 
-@facebook.authorized_handler
 def test(request):
-    context = {
-        'FACEBOOK_CLIENT_ID': FACEBOOK_CLIENT_ID,
-        'FACEBOOK_CLIENT_SECRET': FACEBOOK_CLIENT_SECRET
-    }
-    me = facebook.get('/me?fields=id,name,email').data
+    url = URL_WORKER()
+    result = requests.get(url.url).json()
 
-    # authorization_base_url = 'https://www.facebook.com/dialog/oauth'
-    # token_url = 'https://graph.facebook.com/oauth/access_token'
-    # redirect_uri = 'https://localhost/'  # Should match Site URL
-    #
-    # from requests_oauthlib import OAuth2Session
-    # from requests_oauthlib.compliance_fixes import facebook_compliance_fix
-    # facebook = OAuth2Session(FACEBOOK_CLIENT_ID, redirect_uri=redirect_uri)
-    # facebook = facebook_compliance_fix(facebook)
-    #
-    #  # Redirect user to Facebook for authorization
-    # authorization_url, state = facebook.authorization_url(
-    #     authorization_base_url)
-    # print 'Please go here and authorize,', authorization_url
-    #
-    #  # Get the authorization verifier code from the callback url
-    # redirect_response = raw_input('Paste the full redirect URL here:')
-    #
-    #  # Fetch the access token
-    # facebook.fetch_token(token_url, client_secret=FACEBOOK_CLIENT_SECRET,
-    #                      authorization_response='https://www.facebook.com/dialog/oauth')
-    #
-    #  # Fetch a protected resource, i.e. user profile
-    # r = facebook.get('https://graph.facebook.com/me?')
-    
-    return JsonResponse(context)
+    return JsonResponse(result)
+
+
+def main(request):
+    user = UserProfile.objects.all()
+    context = {}
+    if user:
+        context['user'] = user[0]
+
+    return render(request, 'main.html', context)
+
+
+def register(request):
+    registered = False
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+            profile.save()
+            registered = True
+        else:
+            print user_form.errors, profile_form.errors
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+    context = {
+        'registered': registered,
+        'user_form': user_form,
+        'profile_form': profile_form
+    }
+    return render(request, 'register.html', context)
