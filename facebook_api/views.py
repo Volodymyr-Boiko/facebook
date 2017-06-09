@@ -1,4 +1,5 @@
 import requests
+from django.contrib.auth.decorators import login_required
 
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -11,6 +12,7 @@ from .forms import UserProfileForm
 from .models import UserProfile
 
 
+@login_required
 def test(request):
     url = URL_WORKER()
     result = requests.get(url.url).json()
@@ -23,8 +25,10 @@ def main(request):
     context = {}
     if user:
         context['user'] = user[0]
+    response = render(request, 'main.html', context)
+    response.set_cookie('fbsr_132816840603239', '132816840603239')
 
-    return render(request, 'main.html', context)
+    return response
 
 
 def register(request):
@@ -54,3 +58,14 @@ def register(request):
         'profile_form': profile_form
     }
     return render(request, 'register.html', context)
+
+
+@login_required
+def home(request):
+    import facebook
+    # result = facebook.get_user_from_cookie(
+    #     cookies=request.COOKIES,
+    #     app_id='132816840603239',
+    #     app_secret='91ae669a2520d2270c98f2a874bf1ea0')
+
+    return render(request, 'home.html')

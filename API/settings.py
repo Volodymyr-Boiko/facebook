@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'facebook_api'
+    'facebook_api',
+    'social_django',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -47,6 +48,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'API.urls'
@@ -64,6 +66,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -87,6 +91,7 @@ TEMPLATE_CONTEXT_PROCESSORS = \
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
 )
 
 WSGI_APPLICATION = 'API.wsgi.application'
@@ -137,22 +142,23 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-FACEBOOK_CLIENT_ID = '132816840603239'
-FACEBOOK_CLIENT_SECRET = '91ae669a2520d2270c98f2a874bf1ea0'
+SOCIAL_AUTH_FACEBOOK_KEY = '132816840603239'
+SOCIAL_AUTH_FACEBOOK_SECRET = '91ae669a2520d2270c98f2a874bf1ea0'
+ACCESS_TOKEN = '132816840603239|7eNhRtQpLzGkzUJ0-Ebka8758cA'
+EXISTING_ACCESS_TOKEN = 'EAAB4y9SatmcBAKSnu4jWO9OFzKvXmmhEUMvPNF9mZBPwzNtlY2sKUIzYXRqZCkJvwWIaESWDGQ1FA0dxEIGD83jgW9EQNAyQ9bIcIxW1mLf5FQv2KPyUSiZCwoLgVbURxhZBR0wMVquQjVJSQZBXkx52wWYPa4R4ZD'
 
-
-GET_ACCESS_TOKEN = 'https://graph.facebook.com/oauth/access_token?' \
-                   'client_id={APP_ID}&' \
-                   'client_secret={APP_SECRET}&' \
-                   'grant_type=fb_exchange_token&' \
-                   'fb_exchange_token={EXISTING_ACCESS_TOKEN}'.\
-    format(APP_ID=FACEBOOK_CLIENT_ID,
-           APP_SECRET=FACEBOOK_CLIENT_SECRET,
-           EXISTING_ACCESS_TOKEN='EAAGQu7mMEr0BABfbprAA9zpA4G3W8gfk0WvMGn9ZAO9Tn3ZAoLyVSLcDjZCV5XGy7YVPGdxyuUE3v8GYw37nc8kRU8u0dUZA7vtdpk3ksqjIOAnZA9m5UZBGEJJYef8gLEqxZCLkJJW2bBNVlqaZBraPZAltwUIrwgYsplFDWZAqdh54fZAPpwMuhnuxlcfGDuJ0bEZD'
-           )
-
-ACCESS_TOKEN = 'EAAGQu7mMEr0BAChQL9NAAE9lVIAGyJkT1Jnp4AZBxIa1y12bXKf3hu2wx1B3crv0ZBhEgAsqZBoiPZCpRcS0jF28vnmvoC8yZAS6IuVDAVjiVTAeRLn4zJMGOKYwdiXrIJRKMB6ElREdjmf10u1tpJa0k5bV1YboZD'
-
+# GET_ACCESS_TOKEN_URL = 'https://graph.facebook.com/oauth/access_token?' \
+#                    'client_id={APP_ID}&' \
+#                    'client_secret={APP_SECRET}&' \
+#                    'grant_type=fb_exchange_token&' \
+#                    'fb_exchange_token={EXISTING_ACCESS_TOKEN}'.\
+#     format(APP_ID=FACEBOOK_CLIENT_ID,
+#            APP_SECRET=FACEBOOK_CLIENT_SECRET,
+#            EXISTING_ACCESS_TOKEN='EAACEdEose0cBAOK2Op9lRClMQBeZAAcLiT8ZAnMkbbTcTLUc9nZBCZCTZCzme4uHREfeHZAUcg3CZBGPaEAVYmhjPgcbsVsn9j7ZBcPcuqhPH067aZCF24psqa0ZBjc46NpysCnvnDSKXw2QjeI07ZAAqdqTEV3kXpFzFXfTikiOHec14Gz3YSqV5PZBvuLC3IPDVAYZD'
+#            )
+#
+# ACCESS_TOKEN = 'EAAGQu7mMEr0BAChQL9NAAE9lVIAGyJkT1Jnp4AZBxIa1y12bXKf3hu2wx1B3crv0ZBhEgAsqZBoiPZCpRcS0jF28vnmvoC8yZAS6IuVDAVjiVTAeRLn4zJMGOKYwdiXrIJRKMB6ElREdjmf10u1tpJa0k5bV1YboZD'
+#
 s = 'https://graph.facebook.com/v2.9/me?' \
     'access_token={ACCESS_TOKEN}' \
     '&debug=all' \
@@ -160,7 +166,12 @@ s = 'https://graph.facebook.com/v2.9/me?' \
     '&format=json' \
     '&method=get' \
     '&pretty=0' \
-    '&suppress_http_code=1'.format(ACCESS_TOKEN=ACCESS_TOKEN)
+    '&suppress_http_code=1'.format(ACCESS_TOKEN=EXISTING_ACCESS_TOKEN)
 
-RESULT_URL = 'https://graph.facebook.com/v2.9/me?access_token={ACCESS_TOKEN}'.\
-    format(ACCESS_TOKEN=ACCESS_TOKEN)
+# RESULT_URL = 'https://graph.facebook.com/v2.9/me?access_token={ACCESS_TOKEN}'.\
+#     format(ACCESS_TOKEN=ACCESS_TOKEN)
+RESULT_URL = ''
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'home'
