@@ -8,6 +8,10 @@ https://docs.djangoproject.com/en/1.9/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
+
+!!!!!!
+great url https://github.com/facebook/facebook-python-ads-sdk
+!!!!!!
 """
 
 import os
@@ -144,14 +148,9 @@ STATIC_URL = '/static/'
 
 SOCIAL_AUTH_FACEBOOK_KEY = '132816840603239'
 SOCIAL_AUTH_FACEBOOK_SECRET = '91ae669a2520d2270c98f2a874bf1ea0'
-ACCESS_TOKEN = '132816840603239|7eNhRtQpLzGkzUJ0-Ebka8758cA'
-EXISTING_ACCESS_TOKEN = 'EAAB4y9SatmcBAKSnu4jWO9OFzKvXmmhEUMvPNF9mZBPwzNtlY2sKUIzYXRqZCkJvwWIaESWDGQ1FA0dxEIGD83jgW9EQNAyQ9bIcIxW1mLf5FQv2KPyUSiZCwoLgVbURxhZBR0wMVquQjVJSQZBXkx52wWYPa4R4ZD'
+APP_TOKEN = '132816840603239|7eNhRtQpLzGkzUJ0-Ebka8758cA'
+EXISTING_ACCESS_TOKEN = 'EAAB4y9SatmcBAN7Shk7OgZBG8jZCYlYZCyMQypuxUeH8aJabEGWB8i5JI9bjM4ZAEkv11USIVfZAcSTPHZABUZBSY3iv0eZCt7jMKelkrnGrFu18lOHlszia5N7EDksYceECWwGP6zbv5dZCgZAaclx9fTSyi61EpZBvk9hFBLuN92qnxNbCzTpLvZBeUV7q61ZCOLYQZD'
 
-# GET_ACCESS_TOKEN_URL = 'https://graph.facebook.com/oauth/access_token?' \
-
-
-# GET_ACCESS_TOKEN = 'https://graph.facebook.com/oauth/access_token?' \
-#            EXISTING_ACCESS_TOKEN='EAACEdEose0cBAOK2Op9lRClMQBeZAAcLiT8ZAnMkbbTcTLUc9nZBCZCTZCzme4uHREfeHZAUcg3CZBGPaEAVYmhjPgcbsVsn9j7ZBcPcuqhPH067aZCF24psqa0ZBjc46NpysCnvnDSKXw2QjeI07ZAAqdqTEV3kXpFzFXfTikiOHec14Gz3YSqV5PZBvuLC3IPDVAYZD'
 s = 'https://graph.facebook.com/v2.9/me?' \
     'access_token={ACCESS_TOKEN}' \
     '&debug=all' \
@@ -160,10 +159,6 @@ s = 'https://graph.facebook.com/v2.9/me?' \
     '&method=get' \
     '&pretty=0' \
     '&suppress_http_code=1'.format(ACCESS_TOKEN=EXISTING_ACCESS_TOKEN)
-
-# RESULT_URL = 'https://graph.facebook.com/v2.9/me?access_token={ACCESS_TOKEN}'.\
-#     format(ACCESS_TOKEN=ACCESS_TOKEN)
-RESULT_URL = ''
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
