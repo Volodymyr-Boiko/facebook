@@ -12,3 +12,12 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class Posts(models.Model):
+
+    post_id = models.CharField(max_length=50, primary_key=True)
+    is_visible = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.post_id

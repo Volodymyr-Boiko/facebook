@@ -5,7 +5,6 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from url_worker.url_worker import URL_WORKER
-from services.unicode_worker import convert_object
 
 from .forms import UserForm
 from .forms import UserProfileForm
@@ -62,7 +61,7 @@ def register(request):
 
 @login_required
 def home(request):
-    import facebook
+    # import facebook
     # result = facebook.get_user_from_cookie(
     #     cookies=request.COOKIES,
     #     app_id='132816840603239',
